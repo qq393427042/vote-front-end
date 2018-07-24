@@ -15,7 +15,18 @@
   },
   "dependencies": {
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.0",
+    "@fortawesome/free-brands-svg-icons": "^5.1.0",
+    "@fortawesome/free-regular-svg-icons": "^5.1.0",
+    "@fortawesome/free-solid-svg-icons": "^5.1.0",
+    "@fortawesome/vue-fontawesome": "^0.1.0",
+    "axios": "^0.18.0",
+    "echarts": "^4.1.0",
+    "element-ui": "^2.4.4",
+    "qs": "^6.5.2",
+    "v-charts": "^1.17.8",
+    "vue-core-image-upload": "^2.4.11"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
