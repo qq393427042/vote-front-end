@@ -23,8 +23,9 @@ export default {
   },
   fetchPost (url, params = {}) {
     return new Promise((resolve, reject) => {
-      var data = qs.stringify(params)
-      axios.post(url, data).then(res => {
+      // var data = JSON.stringify(param )
+      var data2 = qs.stringify(params, { arrayFormat: 'repeat' })
+      axios.post(url, data2).then(res => {
         resolve(res.data)
       }).catch(error => {
         reject(error)

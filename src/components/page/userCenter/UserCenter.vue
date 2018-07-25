@@ -42,6 +42,11 @@ export default {
   methods: {
     showView (e) {
       console.log('show path' + e)
+      // for (var i in this.menuItems) {
+      //   if (this.menuItems[i].path === e) {
+      //     this.defaultActive = i - 1
+      //   }
+      // }
       this.$router.push('/userCenter/' + e)
     },
     handleOpen (key, keyPath) {
@@ -64,7 +69,6 @@ export default {
               path: res.data[i].path
             })
           }
-          this.defaultActive = '1'
         }
       })
     }

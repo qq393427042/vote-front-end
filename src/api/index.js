@@ -46,3 +46,11 @@ export const userMenu = (params) => {
 export const userQuit = (params) => {
   return http.fetchPost(prefix + '/user/quit', params)
 }
+// 检测文件存在
+export const CheckFileExist = (params) => {
+  return http.fetchPost(prefix + '/user/checkFileExist', params)
+}
+// 新建投票
+export const createVote = (params) => {
+  return http.fetchPost(prefix + '/user/createVote', params)
+}

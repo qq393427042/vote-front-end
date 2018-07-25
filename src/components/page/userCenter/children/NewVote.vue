@@ -6,10 +6,20 @@
         prop="title"
         label="投票标题"
         :rules="[
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' }
+      { required: true, message: '请输入投票标题', trigger: 'blur' }
     ]"
       >
         <el-input v-model="dynamicValidateForm.title"></el-input>
+      </el-form-item>
+      <el-form-item
+        prop="introduction"
+        label="投票描述">
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 4}"
+          placeholder="输入投票描述"
+          v-model="dynamicValidateForm.introduction">
+        </el-input>
       </el-form-item>
       <el-form-item
         v-for="(domain, index) in dynamicValidateForm.domains"
@@ -51,6 +61,8 @@
 </template>
 
 <script>
+import {createVote} from '../../../../api'
+
 export default {
   name: 'NewVote',
   data () {
@@ -59,19 +71,47 @@ export default {
         domains: [{
           name: '',
           imageUrl: '',
-          index: ''
+          imagemd5: ''
         }],
-        title: ''
+        title: '',
+        introduction: ''
       }
     }
   },
   methods: {
     submitForm (formName) {
+      // 选项必须大于等于两个
+      if (this.dynamicValidateForm.domains.length < 2) {
+        this.$message.warning('选项必须大于等于两个')
+        return false
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          var names = []
+          var imageUrls = []
+          var indexes = []
+          var imagemd5s = []
+          for (var i in this.dynamicValidateForm.domains) {
+            names.push(this.dynamicValidateForm.domains[i].name)
+            imagemd5s.push(this.dynamicValidateForm.domains[i].imagemd5)
+            imageUrls.push(this.dynamicValidateForm.domains[i].imageUrl)
+            indexes.push(parseInt(i) + 1)
+          }
+          createVote(
+            {
+              names: names,
+              indexes: indexes,
+              imageUrls: imageUrls,
+              imagemd5s: imagemd5s,
+              title: this.dynamicValidateForm.title,
+              introduction: this.dynamicValidateForm.introduction
+            }
+          ).then(res => {
+            console.log(res)
+          })
           alert('submit!')
         } else {
-          console.log('error submit!!')
+          this.$message.warning('请检查输入格式')
           return false
         }
       })
@@ -92,12 +132,13 @@ export default {
       this.dynamicValidateForm.domains.push({
         name: '',
         imageUrl: '',
-        key: Date.now()
+        imagemd5: ''
       })
     },
     handleAvatarSuccess (res, file) {
       console.log(res)
       this.dynamicValidateForm.domains[res.data.index].imageUrl = res.data.url
+      this.dynamicValidateForm.domains[res.data.index].imagemd5 = res.data.md5
       console.log(this.dynamicValidateForm)
     },
     beforeAvatarUpload (file) {
