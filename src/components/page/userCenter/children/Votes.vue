@@ -28,19 +28,27 @@
       <el-table-column
         align="center"
         label="状态">
-        <template  slot-scope="scope">
-          {{ scope.row.stateName }}
+        <template slot-scope="scope">
+          <span v-if="scope.row.stateName === 'published'">已发布</span>
+          <span v-else-if="scope.row.stateName === 'saved'">暂存</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
-        <template slot-scope="scope">
+        <template  slot-scope="scope">
+          <el-button size="mini" @click="goVote(scope.$index, scope.row)" v-if="scope.row.stateName === 'published'" round>
+            去投票
+          </el-button>
+          <el-button size="mini" @click="goPublish(scope.$index, scope.row)" v-else-if="scope.row.stateName === 'saved'" round>
+            去发布
+          </el-button>
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            type="primary"
+            @click="handleEdit(scope.$index, scope.row)" round>编辑</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleDelete(scope.$index, scope.row)" round>删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,8 +79,15 @@ export default {
     }
   },
   methods: {
+    goVote (index, row) {
+      console.log(index, row)
+    },
+    goPublish (index, row) {
+      console.log(index, row)
+    },
     handleCurrentChange (val) {
       console.log('当前页' + val)
+      this.getVotes()
     },
     handleEdit (index, row) {
       console.log(index, row)
@@ -81,9 +96,12 @@ export default {
       console.log(index, row)
     },
     getVotes () {
-      userVoteList().then(res => {
-        console.log(res)
-        let data = res.data
+      userVoteList({page: this.currentPage}).then(res => {
+        this.currentPage = res.data.pageNum
+        this.pageSize = res.data.pageSize
+        let data = res.data.list
+        this.total = res.data.total
+        this.tableData = []
         for (let i in data) {
           let vote = data[i]
           vote.createTime = moment(new Date(vote.createTime)).format('YYYY-MM-DD')

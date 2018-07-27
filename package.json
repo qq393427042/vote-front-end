@@ -27,6 +27,7 @@
     "v-charts": "^1.17.8",
     "vue": "^2.5.2",
     "vue-core-image-upload": "^2.4.11",
+    "vue-poll": "^0.1.5",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
