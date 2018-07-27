@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/user/headUpload': {
-        target: 'http://192.168.22.161:8080',
+        target: 'http://192.168.22.210:8080',
         changeOrigin: true,
       }
     },

@@ -7,7 +7,9 @@
       <el-container>
         <el-aside width="200px">
           <h4>haha</h4>
-          <el-menu v-bind:default-active="defaultActive" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+          <el-menu v-bind:default-active="defaultActive" class="el-menu-vertical-demo"
+                   @open="handleOpen"
+                   @close="handleClose">
             <el-menu-item @click="showView(item.path)"
                           v-for="item in menuItems"
                           :key="item.index"
@@ -27,6 +29,7 @@
 <script>
 import {userMenu} from '../../../api/index.js'
 import isHeader from '../../Header'
+import bus from '../../../eventBus'
 export default {
   name: 'UserCenter',
   components: {
@@ -35,7 +38,7 @@ export default {
   data () {
     return {
       isShow: false,
-      defaultActive: '',
+      defaultActive: '3',
       menuItems: []
     }
   },
@@ -63,7 +66,7 @@ export default {
         } else if (res.state === 1) {
           for (var i in res.data) {
             this.menuItems.push({
-              index: res.data[i].id,
+              index: (parseInt(i) + 1),
               name: res.data[i].name,
               roleId: res.data[i].roleId,
               path: res.data[i].path
@@ -75,6 +78,19 @@ export default {
   },
   mounted () {
     this.getMenu()
+    bus.$on('exMenu', e => {
+      console.log('change active ' + e)
+      this.defaultActive = e
+    })
+    let path = this.$route.path
+    if (path === '/userCenter/detail') {
+      this.defaultActive = '1'
+    } else if (path === '/userCenter/votes') {
+      this.defaultActive = '2'
+    } else if (path === '/userCenter/newVote') {
+      this.defaultActive = '3'
+      console.log(this.menuItems)
+    }
   }
 }
 </script>

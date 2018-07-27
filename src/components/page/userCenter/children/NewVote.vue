@@ -36,7 +36,7 @@
             style="line-height: 0"
             class="avatar-uploader"
             :header="{'withCredentials':'false'}"
-            action="http://192.168.22.161:8081/user/headUpload"
+            action="http://192.168.22.210:8081/user/headUpload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :data="{index: index}"
@@ -51,7 +51,8 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
+        <el-button type="primary" @click="submitForm('dynamicValidateForm', true)">提交</el-button>
+        <el-button type="primary" @click="submitForm('dynamicValidateForm', false)">暂存</el-button>
         <el-button @click="addDomain">新增选项</el-button>
         <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
       </el-form-item>
@@ -61,8 +62,9 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import {createVote} from '../../../../api'
-
+import bus from '../../../../eventBus'
 export default {
   name: 'NewVote',
   data () {
@@ -79,7 +81,9 @@ export default {
     }
   },
   methods: {
-    submitForm (formName) {
+    submitForm (formName, isCreate) {
+      // TODO 检查这里
+      console.log('是否创建 ：' + isCreate)
       // 选项必须大于等于两个
       if (this.dynamicValidateForm.domains.length < 2) {
         this.$message.warning('选项必须大于等于两个')
@@ -103,13 +107,20 @@ export default {
               indexes: indexes,
               imageUrls: imageUrls,
               imagemd5s: imagemd5s,
+              isCreate: isCreate,
               title: this.dynamicValidateForm.title,
               introduction: this.dynamicValidateForm.introduction
             }
           ).then(res => {
-            console.log(res)
+            if (res.state === 1) {
+              this.$message.success(res.message)
+              // 转到投票管理
+              this.$router.push('/userCenter/votes')
+              bus.$emit('exMenu', 2)
+            } else if (res.state === 0) {
+              this.$message.warning(res.message)
+            }
           })
-          alert('submit!')
         } else {
           this.$message.warning('请检查输入格式')
           return false
@@ -154,6 +165,9 @@ export default {
       }
       return isLt2M
     }
+  },
+  mounted () {
+    bus.$emit('exMenu', '3')
   }
 }
 </script>

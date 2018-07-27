@@ -3,8 +3,12 @@
 </template>
 
 <script>
+import bus from '../../../../eventBus'
 export default {
-  name: 'Detail'
+  name: 'Detail',
+  mounted () {
+    bus.$emit('exMenu', '1')
+  }
 }
 </script>
 

@@ -1,5 +1,5 @@
 import http from './public'
-const prefix = 'http://192.168.22.161:8080'
+const prefix = 'http://192.168.22.210:8080'
 // 极验验证码
 export const geetest = (params) => {
   return http.fetchGet(prefix + '/login/geetestInit?t=' + (new Date()).getTime(), params)
@@ -53,4 +53,8 @@ export const CheckFileExist = (params) => {
 // 新建投票
 export const createVote = (params) => {
   return http.fetchPost(prefix + '/user/createVote', params)
+}
+// 获取个人投票列表
+export const userVoteList = (params) => {
+  return http.fetchPost(prefix + '/user/userVoteList', params)
 }
