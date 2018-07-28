@@ -13,11 +13,14 @@ import {fab} from '@fortawesome/free-brands-svg-icons'
 import {far} from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {getStore, setStore, removeStore} from './util/store'
+import {staticFilePath} from './util/keys'
+
 Vue.prototype.$store = {
   getStore,
   setStore,
   removeStore
 }
+Vue.prototype.staticFilePath = staticFilePath()
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 library.add(fas)

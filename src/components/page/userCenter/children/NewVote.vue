@@ -36,7 +36,7 @@
             style="line-height: 0"
             class="avatar-uploader"
             :header="{'withCredentials':'false'}"
-            action="http://192.168.22.210:8081/user/headUpload"
+            action="http://192.168.22.210:8081/user/optionPic"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :data="{index: index}"
@@ -148,7 +148,7 @@ export default {
     },
     handleAvatarSuccess (res, file) {
       console.log(res)
-      this.dynamicValidateForm.domains[res.data.index].imageUrl = res.data.url
+      this.dynamicValidateForm.domains[res.data.index].imageUrl = this.staticFilePath + res.data.url
       this.dynamicValidateForm.domains[res.data.index].imagemd5 = res.data.md5
       console.log(this.dynamicValidateForm)
     },

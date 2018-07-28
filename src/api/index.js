@@ -58,3 +58,11 @@ export const createVote = (params) => {
 export const userVoteList = (params) => {
   return http.fetchPost(prefix + '/user/userVoteList', params)
 }
+// 获取个人信息
+export const userInfo = (params) => {
+  return http.fetchPost(prefix + '/user/userInfo', params)
+}
+// 修改个人信息
+export const updateUserInfo = (params) => {
+  return http.fetchPost(prefix + '/user/updateUserInfo', params)
+}

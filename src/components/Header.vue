@@ -64,7 +64,6 @@ export default {
     },
     initDropMenu () {
       userMenu().then(res => {
-        console.log(res)
         if (res.state === 0) {
           // this.$message.warning(res.message)
           console.log(res.message)
@@ -80,7 +79,6 @@ export default {
             })
           }
           this.dropShow = true
-          this.synDropMenu()
         }
       })
     }

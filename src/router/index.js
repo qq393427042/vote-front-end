@@ -34,6 +34,10 @@ export default new Router({
         {path: 'newVote', name: 'NewVote', component: NewVote},
         {path: 'votes', name: 'Votes', component: Votes}
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })

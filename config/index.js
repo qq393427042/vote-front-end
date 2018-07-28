@@ -11,7 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/user/headUpload': {
+      '/user/uploadHead': {
+        target: 'http://192.168.22.210:8080',
+        changeOrigin: true,
+      },
+      '/user/optionPic': {
         target: 'http://192.168.22.210:8080',
         changeOrigin: true,
       }
