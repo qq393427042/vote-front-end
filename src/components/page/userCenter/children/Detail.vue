@@ -99,8 +99,9 @@ export default {
           this.$message.error(res.message)
         } else if (res.state === 1) {
           this.nameVisible = false
-          this.userInfo.sex = this.newInfo.sex
+          this.userInfo.sex = parseInt(this.newInfo.sex)
           this.userInfo.name = this.newInfo.name
+          this.userInfo.modifyTime = moment(new Date(res.data.date)).format('YYYY-MM-DD h:mm:ss')
           this.$message.success(res.message)
           bus.$emit('changeName', this.newInfo.name)
         }

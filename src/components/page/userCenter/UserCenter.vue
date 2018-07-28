@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-header style="height: 80px">
+      <el-header style="height: 80px; margin-bottom: 15px">
         <is-header></is-header>
       </el-header>
       <el-container>
@@ -123,7 +123,7 @@ export default {
     changeName () {
       bus.$on('changeName', name => {
         console.log('change name : ' + name)
-        this.username.name = name
+        this.userInfo.name = name
       })
     }
   },

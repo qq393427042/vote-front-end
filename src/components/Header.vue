@@ -65,8 +65,8 @@ export default {
     initDropMenu () {
       userMenu().then(res => {
         if (res.state === 0) {
-          // this.$message.warning(res.message)
-          console.log(res.message)
+          this.$message.warning(res.message)
+          // console.log(res.message)
           this.dropShow = false
           this.$router.push('/')
         } else if (res.state === 1) {
@@ -99,6 +99,8 @@ export default {
     color: white;
     height: 100%;
     width: 100%;
+  }
+  .el-header{
   }
   .header a{
     color: white;

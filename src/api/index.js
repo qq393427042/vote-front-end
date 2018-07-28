@@ -66,3 +66,15 @@ export const userInfo = (params) => {
 export const updateUserInfo = (params) => {
   return http.fetchPost(prefix + '/user/updateUserInfo', params)
 }
+// 获取投票页面数据
+export const getVoteInfo = (params) => {
+  return http.fetchPost(prefix + '/vote', params)
+}
+// 获取某个投票所有选项
+export const getVoteOptions = (params) => {
+  return http.fetchPost(prefix + '/vote/options', params)
+}
+// 获取图片url
+export const getFilename = (params) => {
+  return http.fetchPost(prefix + '/common/fileName', params)
+}

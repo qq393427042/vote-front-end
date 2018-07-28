@@ -81,6 +81,8 @@ export default {
   methods: {
     goVote (index, row) {
       console.log(index, row)
+      let id = row.id
+      this.$router.push({path: '/vote', query: {voteId: id}})
     },
     goPublish (index, row) {
       console.log(index, row)

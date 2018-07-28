@@ -7,6 +7,7 @@ import UserCenter from '../components/page/userCenter/UserCenter'
 import Detail from '../components/page/userCenter/children/Detail'
 import NewVote from '../components/page/userCenter/children/NewVote'
 import Votes from '../components/page/userCenter/children/Votes'
+import Vote from '../components/page/Vote'
 
 Vue.use(Router)
 
@@ -38,6 +39,10 @@ export default new Router({
     {
       path: '*',
       redirect: '/'
+    },
+    {
+      path: '/vote',
+      component: Vote
     }
   ]
 })
