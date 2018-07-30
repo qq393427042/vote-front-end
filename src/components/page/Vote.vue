@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {getVoteInfo, getVoteOptions, getFilename, doVote} from '../../api'
+import {checkVote, getVoteInfo, getVoteOptions, getFilename, doVote} from '../../api'
 import isHeader from '../Header'
 export default {
   name: 'Vote',
@@ -86,26 +86,7 @@ export default {
     change (val) {
       console.log(val)
     },
-    init () {
-      // TODO 投票页面加载前检查用户是否已经对此投票进行过投票
-      let voteId = this.$route.query.voteId
-      getVoteInfo({voteId: voteId}).then(res => {
-        if (res.state === 0) {
-          this.$message.warning(res.message)
-          this.$router.push('/')
-        } else {
-          let data = res.data
-          this.voteInfo.id = data.id
-          this.voteInfo.title = data.title
-          this.voteInfo.introduction = data.introduction
-          this.voteInfo.createTime = data.createTime
-          this.voteInfo.username = data.username
-          this.voteInfo.userId = data.userId
-          this.voteInfo.clickTimes = data.clickTimes
-          this.voteInfo.maxSelect = data.maxSelect
-          this.voteInfo.minSelect = data.minSelect
-        }
-      })
+    initOptions (voteId) {
       getVoteOptions({voteId: voteId}).then(res => {
         console.log(res)
         let data = res.data
@@ -126,6 +107,40 @@ export default {
           })
         }
       })
+    },
+    initVoteInfo (voteId) {
+      getVoteInfo({voteId: voteId}).then(res => {
+        if (res.state === 0) {
+          this.$message.warning(res.message)
+          this.$router.replace('/')
+        } else {
+          let data = res.data
+          this.voteInfo.id = data.id
+          this.voteInfo.title = data.title
+          this.voteInfo.introduction = data.introduction
+          this.voteInfo.createTime = data.createTime
+          this.voteInfo.username = data.username
+          this.voteInfo.userId = data.userId
+          this.voteInfo.clickTimes = data.clickTimes
+          this.voteInfo.maxSelect = data.maxSelect
+          this.voteInfo.minSelect = data.minSelect
+        }
+      })
+    },
+    init () {
+      let voteId = this.$route.query.voteId
+      // TODO 投票页面加载前检查用户是否已经对此投票进行过投票
+      checkVote({voteId: voteId}).then(res => {
+        if (res.state === 0) {
+          this.$router.push('/')
+        } else if (res.state === 2) {
+          this.$message.warning(res.message)
+          this.$router.replace({path: '/voteResult', query: {voteId: voteId}})
+        } else if (res.state === 1) {
+          this.initOptions(voteId)
+          this.initVoteInfo(voteId)
+        }
+      })
     }
   },
   created () {
@@ -134,7 +149,7 @@ export default {
 }
 </script>
 
-<style>
+<style >
   .el-radio-group{
     display: block;
   }

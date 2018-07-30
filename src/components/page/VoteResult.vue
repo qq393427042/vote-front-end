@@ -40,7 +40,7 @@ export default {
       this.voteId = this.$route.query['voteId']
       getVoteInfo({voteId: this.voteId}).then(res => {
         if (res.state === 0) {
-          this.$router.push('/')
+          this.$router.replace('/')
         } else if (res.state === 1) {
           let data = res.data
           this.voteName = data.title

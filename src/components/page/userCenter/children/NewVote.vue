@@ -190,7 +190,7 @@ export default {
     checkState().then(res => {
       if (res.state === 0) {
         this.$message.warning(res.message)
-        this.$router.push('/')
+        this.$router.replace('/')
       }
     })
     bus.$emit('exMenu', '3')
@@ -199,6 +199,9 @@ export default {
 </script>
 
 <style scoped>
+  .newVote{
+    width: 100%;
+  }
   .el-form-item{
     line-height: 0;
   }

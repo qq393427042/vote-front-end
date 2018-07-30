@@ -125,7 +125,7 @@ export default {
 
           console.log('转到主页')
           this.$message.success(res.message)
-          this.$router.push({
+          this.$router.replace({
             path: '/'
           })
         } else {

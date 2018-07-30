@@ -111,7 +111,7 @@ export default {
       userInfo().then(res => {
         if (res.state === 0) {
           this.$message.warning(res.message)
-          this.$router.push('/')
+          this.$router.replace('/')
         } else {
           let data = res.data
           this.userInfo['head'] = data.head

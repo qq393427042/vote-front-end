@@ -131,7 +131,7 @@ export default {
     checkState().then(res => {
       if (res.state === 0) {
         this.$message.warning(res.message)
-        this.$router.push('/')
+        this.$router.replace('/')
       } else {
         this.getUserInfo()
         this.getMenu()

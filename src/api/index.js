@@ -78,7 +78,15 @@ export const getVoteOptions = (params) => {
 export const getFilename = (params) => {
   return http.fetchPost(prefix + '/common/fileName', params)
 }
-//
+// 投票
 export const doVote = (params) => {
   return http.fetchPost(prefix + '/vote/doVote', params)
+}
+// 查询用户是否投票
+export const checkVote = (params) => {
+  return http.fetchPost(prefix + '/vote/checkVote', params)
+}
+// 保存投票
+export const saveVote = (params) => {
+  return http.fetchPost(prefix + '/vote/saveVote', params)
 }
