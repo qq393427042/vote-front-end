@@ -65,10 +65,10 @@ export default {
     initDropMenu () {
       userMenu().then(res => {
         if (res.state === 0) {
-          this.$message.warning(res.message)
+          // this.$message.warning(res.message)
           // console.log(res.message)
           this.dropShow = false
-          this.$router.push('/')
+          // this.$router.push('/')
         } else if (res.state === 1) {
           for (var i in res.data) {
             this.dropMenuItems.push({
