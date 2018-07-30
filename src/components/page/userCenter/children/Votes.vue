@@ -99,16 +99,21 @@ export default {
     },
     getVotes () {
       userVoteList({page: this.currentPage}).then(res => {
-        this.currentPage = res.data.pageNum
-        this.pageSize = res.data.pageSize
-        let data = res.data.list
-        this.total = res.data.total
-        this.tableData = []
-        for (let i in data) {
-          let vote = data[i]
-          vote.createTime = moment(new Date(vote.createTime)).format('YYYY-MM-DD')
-          vote.modifyTime = moment(new Date(vote.modifyTime)).format('YYYY-MM-DD')
-          this.tableData.push(vote)
+        if (res.state === 0) {
+          this.$message.warning(res.message)
+          this.$router.push('/')
+        } else {
+          this.currentPage = res.data.pageNum
+          this.pageSize = res.data.pageSize
+          let data = res.data.list
+          this.total = res.data.total
+          this.tableData = []
+          for (let i in data) {
+            let vote = data[i]
+            vote.createTime = moment(new Date(vote.createTime)).format('YYYY-MM-DD')
+            vote.modifyTime = moment(new Date(vote.modifyTime)).format('YYYY-MM-DD')
+            this.tableData.push(vote)
+          }
         }
       })
     }

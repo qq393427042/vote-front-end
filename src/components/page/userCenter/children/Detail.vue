@@ -109,16 +109,21 @@ export default {
     },
     getUserInfo () {
       userInfo().then(res => {
-        let data = res.data
-        this.userInfo['head'] = data.head
-        this.userInfo['createTime'] = moment(new Date(res.data.createTime)).format('YYYY-MM-DD h:mm:ss')
-        this.userInfo['id'] = data.id
-        this.userInfo['lastLoginTime'] = moment(new Date(res.data.lastLoginTime)).format('YYYY-MM-DD h:mm:ss')
-        this.userInfo['modifyTime'] = moment(new Date(res.data.modifyTime)).format('YYYY-MM-DD h:mm:ss')
-        this.userInfo['name'] = data.name
-        this.userInfo['sex'] = data.sex
-        this.userInfo['state'] = data.state
-        this.userInfo['username'] = data.username
+        if (res.state === 0) {
+          this.$message.warning(res.message)
+          this.$router.push('/')
+        } else {
+          let data = res.data
+          this.userInfo['head'] = data.head
+          this.userInfo['createTime'] = moment(new Date(res.data.createTime)).format('YYYY-MM-DD h:mm:ss')
+          this.userInfo['id'] = data.id
+          this.userInfo['lastLoginTime'] = moment(new Date(res.data.lastLoginTime)).format('YYYY-MM-DD h:mm:ss')
+          this.userInfo['modifyTime'] = moment(new Date(res.data.modifyTime)).format('YYYY-MM-DD h:mm:ss')
+          this.userInfo['name'] = data.name
+          this.userInfo['sex'] = data.sex
+          this.userInfo['state'] = data.state
+          this.userInfo['username'] = data.username
+        }
       })
     },
     handleAvatarSuccess (res, file) {

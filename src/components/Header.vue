@@ -53,7 +53,6 @@ export default {
     check () {
       checkState().then(res => {
         if (res.state === 0) {
-          this.$message.info('请先登录')
           this.$router.push('/login')
         } else {
           console.log('已登录')

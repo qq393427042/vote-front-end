@@ -22,6 +22,13 @@
         </el-input>
       </el-form-item>
       <el-form-item
+        prop="maxSelect"
+        label="选择数量">
+        <el-input-number v-model="dynamicValidateForm.maxSelect" @change="handleChange" :min="1"
+                         :max="maxLength" label="选择数量">
+        </el-input-number>
+      </el-form-item>
+      <el-form-item
         v-for="(domain, index) in dynamicValidateForm.domains"
         :label="'选项' + index + '名称'"
         :key="domain.key"
@@ -63,7 +70,7 @@
 
 <script>
 /* eslint-disable no-unused-vars */
-import {createVote} from '../../../../api'
+import {checkState, createVote} from '../../../../api'
 import bus from '../../../../eventBus'
 export default {
   name: 'NewVote',
@@ -76,11 +83,16 @@ export default {
           imagemd5: ''
         }],
         title: '',
-        introduction: ''
-      }
+        introduction: '',
+        maxSelect: 1
+      },
+      maxLength: 1
     }
   },
   methods: {
+    handleChange (value) {
+      console.log(value)
+    },
     submitForm (formName, isCreate) {
       // TODO 检查这里
       console.log('是否创建 ：' + isCreate)
@@ -108,6 +120,7 @@ export default {
               imageUrls: imageUrls,
               imagemd5s: imagemd5s,
               isCreate: isCreate,
+              maxSelect: this.dynamicValidateForm.maxSelect,
               title: this.dynamicValidateForm.title,
               introduction: this.dynamicValidateForm.introduction
             }
@@ -137,6 +150,12 @@ export default {
       var index = this.dynamicValidateForm.domains.indexOf(item)
       if (index !== -1) {
         this.dynamicValidateForm.domains.splice(index, 1)
+        this.maxLength--
+        console.log(this.dynamicValidateForm.maxSelect)
+        console.log(this.maxLength)
+        if (this.dynamicValidateForm.maxSelect > this.maxLength) {
+          this.dynamicValidateForm.maxSelect = this.maxLength
+        }
       }
     },
     addDomain () {
@@ -145,6 +164,7 @@ export default {
         imageUrl: '',
         imagemd5: ''
       })
+      this.maxLength++
     },
     handleAvatarSuccess (res, file) {
       console.log(res)
@@ -167,6 +187,12 @@ export default {
     }
   },
   mounted () {
+    checkState().then(res => {
+      if (res.state === 0) {
+        this.$message.warning(res.message)
+        this.$router.push('/')
+      }
+    })
     bus.$emit('exMenu', '3')
   }
 }

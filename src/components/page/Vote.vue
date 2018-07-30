@@ -7,15 +7,9 @@
       <div class="menu_info">
         <div><h4>{{voteInfo.title}}</h4></div>
         <div><h5>{{voteInfo.introduction}}</h5></div>
-        <!--<el-card v-for="-->
-    <!--/* eslint-disable vue/valid-v-for */-->
-    <!--option in options" :key="options.index" @click.native="select($event, option)" class="card raw_card" shadow="hover" body-style="width:100%; padding: 0;display: flex;flex-wrap: nowrap;justify-content: center;align-items: center;">-->
-          <!--<img :src="option.pic" class="image">-->
-          <!--<div style="padding: 14px;display: inline-block">-->
-            <!--<span>{{option.name}}</span>-->
-          <!--</div>-->
-        <!--</el-card>-->
-        <el-checkbox-group class="vote_options" @change="change" v-model="selected">
+        <div>请选择{{voteInfo.maxSelect}}项</div>
+        <el-checkbox-group v-if="voteInfo.maxSelect > 1" :min="0" :max="voteInfo.maxSelect" class="vote_options"
+                           @change="change" v-model="selected">
           <el-checkbox-button v-for="
           /* eslint-disable vue/valid-v-for */
           option in options" :label="option.index" :key="options.index">
@@ -23,7 +17,15 @@
             <span>{{option.name}}</span>
           </el-checkbox-button>
         </el-checkbox-group>
-        <el-button type="primary">
+        <el-radio-group v-if="voteInfo.maxSelect === 1" class="vote_options" @change="change" v-model="selected">
+          <el-radio-button v-for="
+          /* eslint-disable vue/valid-v-for */
+          option in options" :label="option.index" :key="options.index">
+            <img :src="option.pic" class="image">
+            <span>{{option.name}}</span>
+          </el-radio-button>
+        </el-radio-group>
+        <el-button @click="doVote" type="primary">
           <font-awesome-icon :icon="['fab', 'vuejs']"></font-awesome-icon>
           投票
         </el-button>
@@ -33,9 +35,7 @@
 </template>
 
 <script>
-// TODO 后台添加 投票最大最小之后 添加checkbox-group属性
-// TODO 进入投票页之前，检查该用户是否已经投票
-import {getVoteInfo, getVoteOptions, getFilename} from '../../api'
+import {getVoteInfo, getVoteOptions, getFilename, doVote} from '../../api'
 import isHeader from '../Header'
 export default {
   name: 'Vote',
@@ -51,30 +51,47 @@ export default {
         createTime: '',
         username: '',
         clickTimes: '',
-        userId: ''
+        userId: '',
+        maxSelect: '',
+        minSelect: ''
       },
       options: [],
       selected: []
     }
   },
   methods: {
+    doVote () {
+      let doOptions = []
+      if (typeof (this.selected) === 'object') {
+        for (let i in this.selected) {
+          doOptions.push(this.selected[i])
+        }
+      } else if (typeof (this.selected) === 'number') {
+        doOptions.push(this.selected)
+      }
+      console.log(doOptions)
+      let params = {
+        voteId: this.voteInfo.id,
+        doOptions: doOptions
+      }
+      doVote(params).then(res => {
+        if (res.state === 0) {
+          this.$message.warning(res.message)
+        } else if (res.state === 1) {
+          this.$message.success(res.message)
+          this.$router.push({path: '/voteResult', query: {voteId: this.voteInfo.id}})
+        }
+      })
+    },
     change (val) {
       console.log(val)
     },
-    // select (event, option) {
-    //   let target = event.target
-    //   if (option.isSelected === false) {
-    //     option.isSelected = true
-    //     target.style['background-color'] = 'ghostwhite'
-    //   } else if (option.isSelected === true) {
-    //     option.isSelected = false
-    //     target.style['background-color'] = ''
-    //   }
-    // },
     init () {
+      // TODO 投票页面加载前检查用户是否已经对此投票进行过投票
       let voteId = this.$route.query.voteId
       getVoteInfo({voteId: voteId}).then(res => {
         if (res.state === 0) {
+          this.$message.warning(res.message)
           this.$router.push('/')
         } else {
           let data = res.data
@@ -85,6 +102,8 @@ export default {
           this.voteInfo.username = data.username
           this.voteInfo.userId = data.userId
           this.voteInfo.clickTimes = data.clickTimes
+          this.voteInfo.maxSelect = data.maxSelect
+          this.voteInfo.minSelect = data.minSelect
         }
       })
       getVoteOptions({voteId: voteId}).then(res => {
@@ -116,10 +135,26 @@ export default {
 </script>
 
 <style>
+  .el-radio-group{
+    display: block;
+  }
+  .el-radio-button{
+    margin-bottom: 10px;
+  }
+  .el-radio-button, .el-radio-button__inner{
+    width: 100%;
+    display: flex;
+    position: relative;
+    outline: 0;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+  }
   .vote_options{
     margin-bottom: 30px;
   }
   .el-checkbox-button{
+    margin-bottom: 10px;
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -131,13 +166,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;  }
-  /*.el-checkbox-button .el-checkbox-button__inner{*/
-    /*display: flex;*/
-    /*width: 100%;*/
-    /*justify-content: space-between;*/
-    /*align-items: center;*/
-    /*align-content: center;*/
-  /*}*/
   .el-main{
     padding: auto;
   }

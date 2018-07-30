@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {userMenu, userInfo} from '../../../api/index.js'
+import {userMenu, userInfo, checkState} from '../../../api/index.js'
 import isHeader from '../../Header'
 import bus from '../../../eventBus'
 import moment from 'moment'
@@ -128,11 +128,18 @@ export default {
     }
   },
   mounted () {
-    this.getUserInfo()
-    this.getMenu()
-    this.activeMenuItem()
-    this.changeHead()
-    this.changeName()
+    checkState().then(res => {
+      if (res.state === 0) {
+        this.$message.warning(res.message)
+        this.$router.push('/')
+      } else {
+        this.getUserInfo()
+        this.getMenu()
+        this.activeMenuItem()
+        this.changeHead()
+        this.changeName()
+      }
+    })
   }
 }
 </script>

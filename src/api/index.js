@@ -78,3 +78,7 @@ export const getVoteOptions = (params) => {
 export const getFilename = (params) => {
   return http.fetchPost(prefix + '/common/fileName', params)
 }
+//
+export const doVote = (params) => {
+  return http.fetchPost(prefix + '/vote/doVote', params)
+}

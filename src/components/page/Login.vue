@@ -22,7 +22,7 @@
         </el-form>
       </div>
       <div class="button_block">
-        <el-button @click="login" type="primary">登录</el-button>
+        <el-button @click="login" :disabled="loginButtonDis" type="primary">登录</el-button>
         <router-link to="/"><el-button>回到主页</el-button></router-link>
       </div>
     </div>
@@ -58,6 +58,7 @@ export default {
       }
     }
     return {
+      loginButtonDis: false,
       cart: [],
       remember: '',
       loginPage: true,
@@ -115,6 +116,7 @@ export default {
         geetest_seccode: result.geetest_seccode,
         statusKey: this.statusKey
       }
+      this.loginButtonDis = true
       userLogin(params).then(res => {
         console.log(res)
         if (res.state === 1) {
@@ -127,6 +129,7 @@ export default {
             path: '/'
           })
         } else {
+          this.loginButtonDis = false
           this.logintxt = '登录'
           this.$message(res.message)
           captcha.reset()
