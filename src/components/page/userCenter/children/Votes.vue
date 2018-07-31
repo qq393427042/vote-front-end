@@ -35,16 +35,12 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template  slot-scope="scope">
-          <el-button size="mini" @click="goVote(scope.$index, scope.row)" v-if="scope.row.stateName === 'published'" round>
+          <el-button size="mini" type="primary" @click="goVote(scope.$index, scope.row)" v-if="scope.row.stateName === 'published'" round>
             去投票
           </el-button>
-          <el-button size="mini" @click="goPublish(scope.$index, scope.row)" v-else-if="scope.row.stateName === 'saved'" round>
+          <el-button size="mini" type="primary" @click="goPublish(scope.$index, scope.row)" v-else-if="scope.row.stateName === 'saved'" round>
             去发布
           </el-button>
-          <el-button
-            size="mini"
-            type="primary"
-            @click="handleEdit(scope.$index, scope.row)" round>编辑</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -128,13 +124,23 @@
         </el-form>
       </div>
     </el-dialog>
+    <el-dialog
+      title="提示"
+      :visible.sync="reallyDialog"
+      width="30%">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import bus from '../../../../eventBus'
-import {userVoteList, getVoteInfo, saveVote, getVoteOptions, getFilename} from '../../../../api'
+import {userVoteList, getVoteInfo, saveVote, getVoteOptions, getFilename, deleteVote} from '../../../../api'
 export default {
   name: 'Votes',
   data () {
@@ -144,6 +150,7 @@ export default {
       total: 50,
       tableData: [],
       dialogFormVisible: false,
+      reallyDialog: false,
       dynamicValidateForm: {
         domains: [],
         title: '',
@@ -162,16 +169,6 @@ export default {
           this.$router.replace('/')
         } else {
           let data = res.data
-          // this.voteInfo.id = data.id
-          // this.voteInfo.title = data.title
-          // this.voteInfo.introduction = data.introduction
-          // this.voteInfo.createTime = data.createTime
-          // this.voteInfo.username = data.username
-          // this.voteInfo.userId = data.userId
-          // this.voteInfo.clickTimes = data.clickTimes
-          // this.voteInfo.maxSelect = data.maxSelect
-          // this.voteInfo.minSelect = data.minSelect
-
           this.dynamicValidateForm.id = data.id
           this.dynamicValidateForm.title = data.title
           this.dynamicValidateForm.introduction = data.introduction
@@ -300,6 +297,7 @@ export default {
       this.$router.push({path: '/vote', query: {voteId: id}})
     },
     goPublish (index, row) {
+      this.dynamicValidateForm.domains = []
       this.initVoteInfo(row.id)
       this.initOptions(row.id)
       this.dialogFormVisible = true
@@ -308,11 +306,30 @@ export default {
       console.log('当前页' + val)
       this.getVotes()
     },
-    handleEdit (index, row) {
-      console.log(index, row)
-    },
     handleDelete (index, row) {
-      console.log(index, row)
+      this.$confirm('此操作将删除此投票, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let params = {
+          voteId: row.id
+        }
+        deleteVote(params).then(res => {
+          if (res.state === 1) {
+            this.$message.success(res.message)
+            // 刷新投票
+            this.getVotes()
+          } else if (res.state === 0) {
+            this.$message.error(res.message)
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     getVotes () {
       userVoteList({page: this.currentPage}).then(res => {

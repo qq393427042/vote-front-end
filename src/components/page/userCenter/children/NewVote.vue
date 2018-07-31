@@ -94,7 +94,6 @@ export default {
       console.log(value)
     },
     submitForm (formName, isCreate) {
-      // TODO 检查这里
       console.log('是否创建 ：' + isCreate)
       // 选项必须大于等于两个
       if (this.dynamicValidateForm.domains.length < 2) {

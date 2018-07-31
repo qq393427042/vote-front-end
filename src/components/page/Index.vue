@@ -5,8 +5,19 @@
         <is-header></is-header>
       </el-header>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
-        <el-main>主页还没写</el-main>
+        <el-main>
+          <el-carousel height="240px" type="card">
+            <el-carousel-item>
+              <img style="width: 100%" src="../../assets/index1.png"/>
+            </el-carousel-item>
+            <el-carousel-item>
+              <img style="width: 100%" src="../../assets/index2.png"/>
+            </el-carousel-item>
+            <el-carousel-item>
+              <img style="width: 100%" src="../../assets/index3.png"/>
+            </el-carousel-item>
+          </el-carousel>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -30,14 +41,12 @@ export default {
     background-color: #D3DCE6;
     color: #333;
     text-align: center;
-    line-height: 200px;
   }
 
   .el-main {
-    background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
+    padding: 0;
   }
 
   body > .el-container {

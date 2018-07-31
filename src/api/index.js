@@ -68,11 +68,11 @@ export const updateUserInfo = (params) => {
 }
 // 获取投票页面数据
 export const getVoteInfo = (params) => {
-  return http.fetchPost(prefix + '/vote', params)
+  return http.fetchPost(prefix + '/common/vote', params)
 }
 // 获取某个投票所有选项
 export const getVoteOptions = (params) => {
-  return http.fetchPost(prefix + '/vote/options', params)
+  return http.fetchPost(prefix + '/common/vote/options', params)
 }
 // 获取图片url
 export const getFilename = (params) => {
@@ -89,4 +89,8 @@ export const checkVote = (params) => {
 // 保存投票
 export const saveVote = (params) => {
   return http.fetchPost(prefix + '/vote/saveVote', params)
+}
+// 删除投票
+export const deleteVote = (params) => {
+  return http.fetchPost(prefix + '/vote/deleteVote', params)
 }

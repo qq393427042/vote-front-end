@@ -25,7 +25,7 @@
             <span>{{option.name}}</span>
           </el-radio-button>
         </el-radio-group>
-        <el-button @click="doVote" type="primary">
+        <el-button @click="doVote" :disabled="buttonDis" type="primary">
           <font-awesome-icon :icon="['fab', 'vuejs']"></font-awesome-icon>
           投票
         </el-button>
@@ -44,6 +44,7 @@ export default {
   },
   data () {
     return {
+      buttonDis: false,
       voteInfo: {
         id: '',
         title: '',
@@ -79,7 +80,7 @@ export default {
           this.$message.warning(res.message)
         } else if (res.state === 1) {
           this.$message.success(res.message)
-          this.$router.push({path: '/voteResult', query: {voteId: this.voteInfo.id}})
+          this.$router.replace({path: '/voteResult', query: {voteId: this.voteInfo.id}})
         }
       })
     },
@@ -129,10 +130,13 @@ export default {
     },
     init () {
       let voteId = this.$route.query.voteId
-      // TODO 投票页面加载前检查用户是否已经对此投票进行过投票
       checkVote({voteId: voteId}).then(res => {
         if (res.state === 0) {
-          this.$router.push('/')
+          // 用户未登录时无法投票 将投票按钮disable
+          this.buttonDis = true
+          this.$message.warning('请登录后进行投票')
+          this.initOptions(voteId)
+          this.initVoteInfo(voteId)
         } else if (res.state === 2) {
           this.$message.warning(res.message)
           this.$router.replace({path: '/voteResult', query: {voteId: voteId}})
