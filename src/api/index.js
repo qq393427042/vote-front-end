@@ -94,3 +94,7 @@ export const saveVote = (params) => {
 export const deleteVote = (params) => {
   return http.fetchPost(prefix + '/vote/deleteVote', params)
 }
+
+export const adminQuit = (params) => {
+  return http.fetchPost(prefix + '/admin/quit', params)
+}

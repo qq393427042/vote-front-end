@@ -9,6 +9,8 @@ import NewVote from '../components/page/userCenter/children/NewVote'
 import Votes from '../components/page/userCenter/children/Votes'
 import Vote from '../components/page/Vote'
 import VoteResult from '../components/page/VoteResult'
+import AdminLogin from '../components/page/AdminLogin'
+import AdminCenter from '../components/page/admin/AdminCenter'
 
 Vue.use(Router)
 
@@ -48,6 +50,14 @@ export default new Router({
     {
       path: '/voteResult',
       component: VoteResult
+    },
+    {
+      path: '/admin/login',
+      component: AdminLogin
+    },
+    {
+      path: '/admin',
+      component: AdminCenter
     }
   ]
 })

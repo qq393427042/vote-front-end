@@ -21,7 +21,8 @@
           <el-radio-button v-for="
           /* eslint-disable vue/valid-v-for */
           option in options" :label="option.index" :key="options.index">
-            <img :src="option.pic" class="image">
+            <img v-if="option.pic" :src="option.pic" class="image">
+            <font-awesome-icon v-else :icon="['fab', 'vuejs']" class="fa-4x"></font-awesome-icon>
             <span>{{option.name}}</span>
           </el-radio-button>
         </el-radio-group>
@@ -100,12 +101,14 @@ export default {
             pic: option.pic,
             isSelected: false
           })
-          getFilename({fileMd5: option.pic}).then(res => {
-            if (res.state === 1) {
-              this.options[i].pic = this.staticFilePath + res.data
-            }
-            console.log(this.options)
-          })
+          if (option.pic) {
+            getFilename({fileMd5: option.pic}).then(res => {
+              if (res.state === 1) {
+                this.options[i].pic = this.staticFilePath + res.data
+              }
+              console.log(this.options)
+            })
+          }
         }
       })
     },

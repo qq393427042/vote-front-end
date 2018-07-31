@@ -58,7 +58,7 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('dynamicValidateForm', true)">提交</el-button>
+        <el-button type="primary" :disabled="buttonDis" @click="submitForm('dynamicValidateForm', true)">提交</el-button>
         <el-button type="primary" @click="submitForm('dynamicValidateForm', false)">暂存</el-button>
         <el-button @click="addDomain">新增选项</el-button>
         <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
@@ -76,6 +76,7 @@ export default {
   name: 'NewVote',
   data () {
     return {
+      buttonDis: false,
       dynamicValidateForm: {
         domains: [{
           name: '',
@@ -112,6 +113,7 @@ export default {
             imageUrls.push(this.dynamicValidateForm.domains[i].imageUrl)
             indexes.push(parseInt(i) + 1)
           }
+          this.buttonDis = true
           createVote(
             {
               names: names,
@@ -131,10 +133,12 @@ export default {
               bus.$emit('exMenu', 2)
             } else if (res.state === 0) {
               this.$message.warning(res.message)
+              this.buttonDis = false
             }
           })
         } else {
           this.$message.warning('请检查输入格式')
+          this.buttonDis = false
           return false
         }
       })

@@ -8,13 +8,6 @@
         label="投票标题">
         <template slot-scope="scope">
           {{ scope.row.title }}
-          <!--<el-popover trigger="hover" placement="top">-->
-            <!--<p>姓名: {{ scope.row.name }}</p>-->
-            <!--<p>住址: {{ scope.row.address }}</p>-->
-            <!--<div slot="reference" class="name-wrapper">-->
-              <!--<el-tag size="medium">{{ scope.row.name }}</el-tag>-->
-            <!--</div>-->
-          <!--</el-popover>-->
         </template>
       </el-table-column>
       <el-table-column
@@ -145,6 +138,7 @@ export default {
   name: 'Votes',
   data () {
     return {
+      buttonDis: false,
       pageSize: 5,
       currentPage: 1,
       total: 50,
@@ -188,11 +182,13 @@ export default {
             imagemd5: option.pic,
             imageUrl: ''
           })
-          getFilename({fileMd5: option.pic}).then(res => {
-            if (res.state === 1) {
-              this.dynamicValidateForm.domains[i].imageUrl = this.staticFilePath + res.data
-            }
-          })
+          if (option.pic) {
+            getFilename({fileMd5: option.pic}).then(res => {
+              if (res.state === 1) {
+                this.dynamicValidateForm.domains[i].imageUrl = this.staticFilePath + res.data
+              }
+            })
+          }
         }
         console.log(this.dynamicValidateForm)
       })
@@ -275,6 +271,7 @@ export default {
             title: this.dynamicValidateForm.title,
             introduction: this.dynamicValidateForm.introduction
           }
+          this.buttonDis = true
           saveVote(params).then(res => {
             if (res.state === 1) {
               this.$message.success(res.message)
@@ -283,10 +280,12 @@ export default {
               bus.$emit('exMenu', '2')
             } else if (res.state === 0) {
               this.$message.warning(res.message)
+              this.buttonDis = false
             }
           })
         } else {
           this.$message.warning('请检查输入格式')
+          this.buttonDis = false
           return false
         }
       })
