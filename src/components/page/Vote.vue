@@ -118,6 +118,10 @@ export default {
           this.$message.warning(res.message)
           this.$router.replace('/')
         } else {
+          if (res.data === null) {
+            this.$message.error('当前投票不存在')
+            this.$router.replace('/')
+          }
           let data = res.data
           this.voteInfo.id = data.id
           this.voteInfo.title = data.title

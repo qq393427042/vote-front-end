@@ -8,6 +8,9 @@
     </div>
     <div class="right_block">
       <div class="right_item">
+        <router-link to="/admin">后台</router-link>
+      </div>
+      <div class="right_item">
         <el-input placeholder="搜索投票" prefix-icon="el-icon-search" v-model="search_keyword"></el-input>
       </div>
       <div class="right_item">

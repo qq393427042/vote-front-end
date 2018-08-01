@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style>
-  .el-main{
+  .voteResult .el-main{
     display: flex;
     justify-content: center;
     align-content: center;
@@ -82,7 +82,7 @@ export default {
   .chart{
     width: 800px;
   }
-  .el-header{
+  .voteResult .el-header{
     padding: 0;
   }
 </style>

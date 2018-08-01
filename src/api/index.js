@@ -98,3 +98,51 @@ export const deleteVote = (params) => {
 export const adminQuit = (params) => {
   return http.fetchPost(prefix + '/admin/quit', params)
 }
+// 获取投票记录表格
+export const getVoteRecordChart = (params) => {
+  return http.fetchPost(prefix + '/admin/voteRecordChart', params)
+}
+// 获取投票创建表格
+export const getVoteChart = (params) => {
+  return http.fetchPost(prefix + '/admin/voteChart', params)
+}
+// 获取投票创建表格
+export const voteList = (params) => {
+  return http.fetchPost(prefix + '/admin/voteList', params)
+}
+// 删除投票
+export const adDeleteVote = (params) => {
+  return http.fetchPost(prefix + '/admin/deleteVote', params)
+}
+// 用户列表
+export const userList = (params) => {
+  return http.fetchPost(prefix + '/admin/userList', params)
+}
+// 删除用户
+export const deleteUser = (params) => {
+  return http.fetchPost(prefix + '/admin/deleteUser', params)
+}
+// 恢复用户
+export const recUser = (params) => {
+  return http.fetchPost(prefix + '/admin/recUser', params)
+}
+// 投票记录列表
+export const recordList = (params) => {
+  return http.fetchPost(prefix + '/admin/recordList', params)
+}
+// 操作记录列表
+export const operatingList = (params) => {
+  return http.fetchPost(prefix + '/admin/operatingList', params)
+}
+// 热门投票
+export const getHotVotes = (params) => {
+  return http.fetchPost(prefix + '/common/hotVotes', params)
+}
+// 最新投票
+export const getLatestVotes = (params) => {
+  return http.fetchPost(prefix + '/common/latestVotes', params)
+}
+// 第一个选项图片
+export const getFirstPic = (params) => {
+  return http.fetchPost(prefix + '/common/firstPic', params)
+}

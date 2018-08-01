@@ -6,28 +6,32 @@
       </el-header>
       <el-container>
         <el-aside width="200px">
-          <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
-            <el-menu-item index="1">
-              <template slot="title">
+          <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+            <el-menu-item @click="changePage('charts')" index="1">
                 <font-awesome-icon :icon="['fas', 'chart-bar']"></font-awesome-icon>
-                <span slot="title">图表统计</span>
-              </template>
+                图表统计
             </el-menu-item>
-            <el-menu-item index="2">
-              <font-awesome-icon :icon="['fas', 'table']"></font-awesome-icon>
-              <span slot="title">投票管理</span>
+            <el-menu-item @click="changePage('votesManage')" index="2">
+              <font-awesome-icon :icon="['fas', 'bars']"></font-awesome-icon>
+              投票管理
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item @click="changePage('userManage')" index="3">
               <font-awesome-icon :icon="['fas', 'user']"></font-awesome-icon>
-              <span slot="title">用户管理</span>
+              用户管理
             </el-menu-item>
-            <el-menu-item index="4">
+            <el-menu-item @click="changePage('voteRecords')" index="4">
               <font-awesome-icon :icon="['fas', 'table']"></font-awesome-icon>
-              <span slot="title">投票记录管理</span>
+              投票记录
+            </el-menu-item>
+            <el-menu-item @click="changePage('operatingRecord')" index="5">
+              <font-awesome-icon :icon="['fas', 'hand-point-up']"></font-awesome-icon>
+              操作记录
             </el-menu-item>
           </el-menu>
         </el-aside>
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -46,6 +50,10 @@ export default {
     }
   },
   methods: {
+    changePage (path) {
+      console.log('show : ' + path)
+      this.$router.push('/admin/' + path)
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -74,9 +82,15 @@ export default {
     color: #333;
     text-align: center;
     line-height: 60px;
+    height: 80px;
+    position: fixed;
+    z-index: 1000;
   }
 
   .el-aside {
+    width: 200px;
+    position: fixed;
+    top: 80px;
     color: #333;
     text-align: center;
     line-height: 200px;
@@ -85,7 +99,11 @@ export default {
   .el-main {
     color: #333;
     text-align: center;
-    line-height: 160px;
+    position: absolute;
+    width: 1100px;
+    left: 200px;
+    top: 80px;
+    /*line-height: 160px;*/
   }
 
   body > .el-container {
