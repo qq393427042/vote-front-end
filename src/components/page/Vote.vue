@@ -161,6 +161,12 @@ export default {
 </script>
 
 <style >
+  .vote .el-header{
+    padding: 0;
+  }
+  .vote .el-radio-group{
+    width: 100%;
+  }
   .el-radio-group{
     display: block;
   }

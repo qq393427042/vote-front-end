@@ -6,7 +6,7 @@
           style="line-height: 0"
           class="avatar-uploader"
           :header="{'withCredentials':'false'}"
-          action="http://192.168.22.210:8081/user/uploadHead"
+          action="http://127.0.0.1:8081/user/uploadHead"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
@@ -17,6 +17,8 @@
           </el-tooltip>
         </el-upload>
       </el-form-item>
+      <label>
+      </label>
       <el-form-item label="昵称">
         <el-dialog title="个人信息" width="30%" :visible.sync="nameVisible">
           <el-form  :model="newInfo">

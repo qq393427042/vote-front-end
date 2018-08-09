@@ -43,7 +43,7 @@
             style="line-height: 0"
             class="avatar-uploader"
             :header="{'withCredentials':'false'}"
-            action="http://192.168.22.210:8081/user/optionPic"
+            action="http://127.0.0.1:8081/user/optionPic"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :data="{index: index}"

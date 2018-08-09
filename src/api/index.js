@@ -1,5 +1,5 @@
 import http from './public'
-const prefix = 'http://192.168.22.210:8080'
+const prefix = 'http://127.0.0.1:8080'
 // 极验验证码
 export const geetest = (params) => {
   return http.fetchGet(prefix + '/login/geetestInit?t=' + (new Date()).getTime(), params)
